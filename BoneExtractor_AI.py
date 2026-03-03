@@ -23,8 +23,8 @@ class BoneExtractorAI:
         self.config = {
             "use_high_resolution": True,
             "ai_task": "total",
-            "bone_high_threshold": 250,
-            "bone_low_threshold": 90,
+            "bone_high_threshold": 200,
+            "bone_low_threshold": 70,
             "gaussian_sigma": 0.5,
             "min_component_size": 1500,
             "closing_radius": 1,
@@ -186,20 +186,6 @@ class BoneExtractorAI:
             bone_mesh = bone_mesh.decimate(self.config["decimate_ratio"])
         
         meshes['bone'] = bone_mesh
-        # 不生成pet的3d模型，只生成骨骼和医生标注的肿瘤模型！！！！
-        # # 2. PET热点网格
-        # if pet_data is not None:
-        #     pet_max = np.max(pet_data)
-        #     pet_threshold = pet_max * 0.4
-        #     pet_mask = (pet_data > pet_threshold)
-            
-        #     if np.any(pet_mask):
-        #         pet_grid = pv.wrap(pet_mask.astype(np.uint8))
-        #         pet_grid.spacing = spacing
-        #         pet_mesh = pet_grid.contour([0.5])
-        #         pet_mesh = pet_mesh.smooth(n_iter=15, relaxation_factor=0.1)
-        #         pet_mesh = pet_mesh.compute_normals(point_normals=True)
-        #         meshes['pet'] = pet_mesh
         
         # 3. 医生标注网格
         if label_data is not None and np.any(label_data):
